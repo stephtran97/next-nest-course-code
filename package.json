@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "typescript": "^5.4.5"
+  },
+  "volta": {
+    "node": "20.13.1"
+  }
+}
