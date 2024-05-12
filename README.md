@@ -6,7 +6,7 @@
 - ReactJS
 - Module 2: PostgreSQL
 - NextJS
-- NextJS
+- NestJS
 - NodeJS/ExpressJS
 - Docker
 
