@@ -35,3 +35,32 @@ const singer = { first: 'Mick', last: 'Jagger', age: 473, isAlive: true };
 printName(singer);
 // trigger excess property checking - directly assign
 printName({ first: 'Mick', last: 'Jagger', age: 473, isAlive: true });
+
+type Exclamation = [...string[], '!'];
+
+type NoneEmpty = [string, ...string[]];
+type Padded = [0, ...string[], 0];
+
+type AcceptedPhoneNum =
+  | '0'
+  | '1'
+  | '2'
+  | '3'
+  | '4'
+  | '5'
+  | '6'
+  | '7'
+  | '8'
+  | '9';
+type PhoneNumber = [
+  '0',
+  AcceptedPhoneNum,
+  AcceptedPhoneNum,
+  AcceptedPhoneNum,
+  AcceptedPhoneNum,
+  AcceptedPhoneNum,
+  AcceptedPhoneNum,
+  AcceptedPhoneNum,
+  AcceptedPhoneNum,
+  AcceptedPhoneNum
+];

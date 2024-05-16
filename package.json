@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "dev": "ts-node index.ts"
+  },
   "dependencies": {
     "typescript": "^5.4.5"
   },
