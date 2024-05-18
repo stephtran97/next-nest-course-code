@@ -64,3 +64,14 @@ type PhoneNumber = [
   AcceptedPhoneNum,
   AcceptedPhoneNum
 ];
+function getFirst<T>(arr: T[], n: number) {
+  return arr.slice(0, n);
+}
+function compare<A, B>(a: A, b: B) {
+  if (typeof a === 'number' && typeof b === 'number') {
+    return a < b ? -1 : a > b ? 1 : 0;
+  }
+}
+function findByName<T extends { name: string }>(items: T[], name: string) {
+  return items.find((item) => item.name === name);
+}
