@@ -45,6 +45,8 @@
   - Tuples
   - Variadic Tuple (using `...` operator)
   - Enum: Reading `Don't use Enum in TypeScript`
+    - Instead using union types
+    - Define to Object and types based on that Object
   - Interface
   - Type and interface
 - Session 3 20240518:
