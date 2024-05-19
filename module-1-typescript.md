@@ -44,7 +44,7 @@
   - Literal types
   - Tuples
   - Variadic Tuple (using `...` operator)
-  - Enum: Reading `Don't use Enum in TypeScript`
+  - Enum: Reading [Don't use Enum in TypeScript](https://dev.to/ivanzm123/dont-use-enums-in-typescript-they-are-very-dangerous-57bh#:~:text=Excessive%20use%20of%20regular%20ENUMs,new%20values%20can%20be%20added)
     - Instead using union types
     - Define to Object and types based on that Object
   - Interface
