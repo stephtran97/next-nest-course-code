@@ -13,6 +13,7 @@
 - [Session 1](#session-1-20240511)
 - [Session 2](#session-2-20240516)
 - [Session 3](#session-3-20240518)
+- [Session 4](#session-4-20240523)
 
 ### Session 1 20240511:
 
@@ -217,3 +218,27 @@ isFunny = 'asd';
 - Generic syntax,
 - Constraining generic types
 - Multiple generic types
+
+### Session 4 20240523:
+
+[Jump up &#x21e7;](#table-of-content)
+
+#### 1. `in` keyword: [&#x21e7;](#session-4-20240523)
+
+#### 2. `keyof` keyword: [&#x21e7;](#session-4-20240523)
+
+#### 3. Mapped Types: [&#x21e7;](#session-4-20240523)
+
+Reference: [Utility types](https://www.typescriptlang.org/docs/handbook/utility-types.html)
+
+- `Partial, Required, Readonly`
+- `Pick`
+- `Record`
+- `Omit`
+- `readonly`, `const`
+
+#### 4. Conditional types: [&#x21e7;](#session-4-20240523)
+
+- Syntax
+- Type constrains
+- Conditional type chaining
