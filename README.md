@@ -2,7 +2,7 @@
 
 ## Technologies:
 
-- Module 1: TypeScript
+- [Module 1: TypeScript](./typescript/module-1-typescript.md)
 - ReactJS
 - Module 2: PostgreSQL
 - NextJS
