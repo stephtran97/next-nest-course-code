@@ -44,7 +44,7 @@ function pickOne<T, K>(a: T, b: K): T | K {
  * with all properties of `A` and `B`.
  * Make it generic!
  */
-function merge<T extends object, K extends object>(a: T, b: K): T & K {
+function merge<T extends {}, K extends {}>(a: T, b: K): T & K {
   return { ...a, ...b };
 }
 
@@ -100,9 +100,9 @@ type RemoveId<Obj> = Omit<Obj, 'id'>;
 // Practice 7
 
 // create a generic that makes the `id` key of an object type optional.
-type MakeIdOptional<Obj extends { id: number | string }> = Partial<{
-  id: Obj['id'];
-}> &
+type MakeIdOptional<Obj extends { id: number | string }> = Partial<
+  Pick<Obj, 'id'>
+> &
   Omit<Obj, 'id'>; // TODO
 
 // type res1 = MakeIdOptional<{
@@ -116,7 +116,10 @@ type MakeIdOptional<Obj extends { id: number | string }> = Partial<{
 //   title: string;
 //   content: string;
 // }>; // { id?: string } & { title: string; content: string }
-
+// type Prettify<T> = {
+//   [K in keyof T]: T[K];
+// };
+// type Test = Prettify<res1>;
 // Practice 8
 
 /**
@@ -143,7 +146,7 @@ const assign = <A, B>(obj1: A, obj2: B): Assign<A, B> => ({
 
 // // No overlap
 // type res3 = Assign<{ name: string; id: number }, { age: number }>; // { name: string; id: number } & { age: number }
-
+// // Prettify type
 // Practice 9
 
 /**
@@ -154,10 +157,10 @@ const assign = <A, B>(obj1: A, obj2: B): Assign<A, B> => ({
  */
 type First<T extends unknown[]> = T[0];
 
-// type res1 = First<[]>; // undefined
-// type res2 = First<[string]>; // string
-// type res3 = First<[2, 3, 4]>; // 2
-// type res4 = First<['a', 'b', 'c']>; // "a"
+type res1 = First<[]>; // undefined
+type res2 = First<[string]>; // string
+type res3 = First<[2, 3, 4]>; // 2
+type res4 = First<['a', 'b', 'c']>; // "a"
 
 // Practice 10
 
@@ -236,7 +239,7 @@ type Length<T extends unknown[]> = T['length']; // TODO
 
 type LengthPlusOne<T extends unknown[]> = [...T, any]['length'];
 
-type res1 = LengthPlusOne<[]>; // 1
-type res2 = LengthPlusOne<[any]>; // 2
-type res3 = LengthPlusOne<[any, any]>; // 3
-type res4 = LengthPlusOne<[any, any, any]>; // 4
+// type res1 = LengthPlusOne<[]>; // 1
+// type res2 = LengthPlusOne<[any]>; // 2
+// type res3 = LengthPlusOne<[any, any]>; // 3
+// type res4 = LengthPlusOne<[any, any, any]>; // 4

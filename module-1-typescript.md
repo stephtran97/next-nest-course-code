@@ -14,6 +14,8 @@
 - [Session 2](#session-2-20240516)
 - [Session 3](#session-3-20240518)
 - [Session 4](#session-4-20240523)
+- [Session 5](#session-5-20240525)
+- [Practical TypeScript](#practical-typescript)
 
 ### Session 1 20240511:
 
@@ -242,3 +244,32 @@ Reference: [Utility types](https://www.typescriptlang.org/docs/handbook/utility-
 - Syntax
 - Type constrains
 - Conditional type chaining
+
+### Session 5 20240525:
+
+[Jump up &#x21e7;](#table-of-content)
+
+#### 1. `infer` keyword: [&#x21e7;](#session-5-20240525)
+
+- Conditional type inference
+- Type inference from Function Signatures
+- Type inference from arrays
+- Type inference with Tuples
+
+#### 2. Template literal types: [&#x21e7;](#session-5-20240525)
+
+- Basics
+- Templates containing primitive types
+- Templates and union types
+- Helper functions
+- Templates and object properties
+
+#### 3. The Union type: [&#x21e7;](#session-5-20240525)
+
+- The union type multiverse
+- The distributive natures of Union types
+- Unions and Conditional types
+
+#### 4. `Prettify` type helper: [&#x21e7;](#session-5-20240525)
+
+### Practical TypeScript:

@@ -140,4 +140,7 @@ const t1 = getWithDefault('title', { title: 'Conditional Types' }, 'hello'); //=
 // getWithDefault("age", { age: 29 }, 0); => number
 // getWithDefault("friends", { age: 29 }, ["Bob"]); => string[]
 
+type Head<T> = T extends [infer Head, ...unknown[], infer U] ? U : []; // TODO
 
+type T11 = Head<['alpha', 'beta', 'gamma']>; // => "alpha"
+type T21 = Head<[]>; // => never
