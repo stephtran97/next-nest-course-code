@@ -166,6 +166,8 @@ isFunny = 'asd';
 - `void`
 - `never`
 
+#### 11. Session 1 practices &#10060;
+
 ### Session 2 20240516:
 
 [Jump up &#x21e7;](#table-of-content)
@@ -199,6 +201,8 @@ isFunny = 'asd';
 
 #### 9. Type and interface [&#x21e7;](#session-2-20240516)
 
+#### 10. Session 2 practices &#10060;
+
 ### Session 3 20240518:
 
 [Jump up &#x21e7;](#table-of-content)
@@ -220,6 +224,8 @@ isFunny = 'asd';
 - Generic syntax,
 - Constraining generic types
 - Multiple generic types
+
+#### 4. Session 3 practices &#10060;
 
 ### Session 4 20240523:
 
@@ -245,16 +251,116 @@ Reference: [Utility types](https://www.typescriptlang.org/docs/handbook/utility-
 - Type constrains
 - Conditional type chaining
 
+#### 5. Session 4 practices &#10060;
+
 ### Session 5 20240525:
 
 [Jump up &#x21e7;](#table-of-content)
 
 #### 1. `infer` keyword: [&#x21e7;](#session-5-20240525)
 
+> **_NOTE:_** `infer` keyword only works in conditional types
+
 - Conditional type inference
+
+  - In other words, we are inferring a new generic type named `U` that is the type of the `id` property of the object `T`. If the object `T` does not have an `id` property, then we simply return `never`.
+
+    ```ts
+    type inferFromPropertyType<T> = T extends { id: infer U } ? U : never;
+    function testInferFromPropertyType<T>(arg: inferFromPropertyType<T>) {}
+    testInferFromPropertyType<{ id: string }>('test'); // string
+    testInferFromPropertyType<{ id: number }>(1); // number
+    ```
+
 - Type inference from Function Signatures
+
+  - For example, we can retrieve the list of parameters as a tuple using `infer`:
+
+    ```ts
+    type Parameters<F> = F extends (...params: infer P) => any ? P : never;
+
+    type Fn = (name: string, id: number) => boolean;
+
+    type T1 = Parameters<Fn>; // => [name: string, id: number]
+    ```
+
+  - These inferred types can be inferred from either the function arguments or from the function return type. Let’s take a look at an example of this:
+
+    ```ts
+    type inferredFromFnParam<T> = T extends (a: infer U) => void ? U : never;
+    function testInferredFromFnParam<T>(arg: inferredFromFnParam<T>) {}
+
+    testInferredFromFnParam<(a: number) => void>(1); // number
+    testInferredFromFnParam<(a: string) => void>('test'); // string
+    ```
+
+    - Here, we have a conditional type named `inferredFromFnParam`, which will infer the type of `U` from the argument named `a` of a function signature that has a single parameter, and returns `void`.
+
+    - If the function signature does not match what is specified by the `extends` clause, that is, it does not take a single parameter and does not return `void`, then the inferred type will be `never`.
+
+  - In a similar manner, we can also infer a type from the return type of a function, as seen in the following example:
+
+    ```ts
+    type inferredFromFnReturnType<T> = T extends (a: string) => infer U
+      ? U
+      : never;
+
+    function testInferredFromReturnType<T>(arg: inferredFromFnReturnType<T>) {}
+
+    testInferredFromReturnType<(a: string) => number>(1); // number
+    testInferredFromReturnType<(a: string) => boolean>(false); // false
+    ```
+
 - Type inference from arrays
+
+  - There is one other syntax that can be used for an inferred type, which is used when inferring a type from an array.
+
+    ```ts
+    type inferredTypeFromArray<T> = T extends (infer U)[] ? U : never;
+
+    function testInferredFromArray<T>(args: inferredTypeFromArray<T>) {}
+
+    testInferredFromArray<string[]>('test');
+    testInferredFromArray<number[]>(1);
+    ```
+
 - Type inference with Tuples
+
+  - `infer` can be used inside any kind of type-level data structure, including tuples!
+
+  - You can use it to retrieve the **first element** of the list:
+
+    ```ts
+    type Head<Tuple> = Tuple extends [infer U, ...unknown[]] ? U : never;
+
+    type T1 = Head<['alpha', 'beta', 'gamma']>; // => "alpha"
+    type T2 = Head<[]>; // => never
+    ```
+
+  - Or the **rest** of the list:
+
+    ```ts
+    type Tail<Tuple> = Tuple extends [unknown, ...infer U] ? U : [];
+
+    type T1 = Tail<['alpha', 'beta', 'gamma']>; // => ["beta", "gamma"];
+    type T2 = Tail<['alpha']>; // => []
+    type T3 = Tail<[]>; // => []
+    ```
+
+    -You're also allowed to use infer **several times** in a pattern:
+
+    ```ts
+    type FirstAndLast<Tuple> = Tuple extends [infer J, ...unknown[], infer K]
+      ? [J, K]
+      : [];
+
+    type T1 = FirstAndLast<[1]>; // => []
+    type T2 = FirstAndLast<[1, 2]>; // => [1, 2]
+    type T3 = FirstAndLast<[1, 2, 3]>; // => [1, 3]
+    type T4 = FirstAndLast<[1, 2, 3, 4]>; // => [1, 4]
+    ```
+
+  - [Practice `infer` keyword](./2-advanced-types/infer-keyword/infer-keyword-practice.ts)&#9989;
 
 #### 2. Template literal types: [&#x21e7;](#session-5-20240525)
 
