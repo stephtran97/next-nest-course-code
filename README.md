@@ -2,7 +2,7 @@
 
 ## Technologies:
 
-- [Module 1: TypeScript](./typescript/module-1-typescript.md)
+- [Module 1: TypeScript](./typescript/module-1-typescript.md){:target="\_blank"}
 - ReactJS
 - Module 2: PostgreSQL
 - NextJS
