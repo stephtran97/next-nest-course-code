@@ -233,11 +233,114 @@ isFunny = 'asd';
 
 #### 1. `in` keyword: [&#x21e7;](#session-4-20240523)
 
+- JavaScript and, subsequently, TypeScript allow us to interrogate an object and see if it has a property using the `in` operator. We can use it as a narrowing:
+
+  ```ts
+  // Define the IIdName interface
+  interface IIdName {
+    id: number;
+    name: string;
+  }
+
+  // Define the IDescrValue interface
+  interface IDescrValue {
+    descr: string;
+    value: number;
+  }
+  // Define the printNameOrValue function which takes an object
+  // that implements either the IIdName or IDescrValue interface
+  function printNameOrValue(obj: IIdName | IDescrValue): void {
+    // Use the 'in' operator to check if the object has an 'id' property
+    if ('id' in obj) {
+      console.log(`obj.name : ${obj.name}`);
+    }
+    // Use the 'in' operator to check if the object has a 'descr' property
+    if ('descr' in obj) {
+      console.log(`obj.value : ${obj.value}`);
+    }
+  }
+  // Calling the printNameOrValue function with two objects with different properties
+  printNameOrValue({
+    id: 1,
+    name: "nameValue",
+  });
+  printNameOrValue({
+    descr: "description",
+    value: 2,
+  });
+
+  // OUTPUT
+  obj.name : nameValue
+  obj.value : 2
+  ```
+
 #### 2. `keyof` keyword: [&#x21e7;](#session-4-20240523)
+
+- TypeScript allows us to iterate through the properties of a type and extract the names of its properties through the **`keyof`** keyword, which we can use as a **string literal type**.
+
+  ```ts
+  // Define an interface `IPerson` with properties `id` and `name`
+  interface IPerson {
+    id: number;
+    name: string;
+  }
+
+  // Generate a string literal type for the properties of the interface `IPerson`
+  type PersonPropertyName = keyof IPerson;
+  // => generate a string literal type for the properties found in the IPerson interface
+  type PersonPropertyLiteral = 'id' | 'name';
+  // Define a function `getProperty` that accepts two parameters
+  function getProperty(key: PersonPropertyName, value: IPerson) {
+    console.log(`${key} = ${value[key]}`);
+  }
+
+  // Call the function `getProperty` with argument `"id"` and an object with `id` and `name` properties
+  getProperty('id', { id: 1, name: 'firstName' }); // "1 = firstName"
+
+  // Call the function `getProperty` with argument `"name"` and an object with `id` and `name` properties
+  getProperty('name', { id: 2, name: 'secondName' }); // "name = secondName"
+
+  // Call the function `getProperty` with argument `"telephone"` and an object with `id` and `name` properties
+  getProperty('telephone', { id: 3, name: 'thirdName' }); // error
+  ```
+
+  > **_Note_**: Using the keyof keyword will generate a string literal that automatically includes all of the properties of an interface. This technique is obviously preferable to having to maintain string literals manually.
+
+  ```ts
+  type Position = 'Programmer' | 'Manager' | 'HR' | 'Scrum master';
+
+  type Employee = {
+    name: string;
+    position: Position;
+  };
+
+  type EmployeeKeys = keyof Employee; // 'name' | 'position'
+
+  const john: Employee = {
+    name: 'John',
+    position: 'Programmer'
+  };
+
+  john['name'];
+
+  function getProperty2(arg: any, key: string) {
+    console.log(arg[key]);
+    return arg[key];
+  }
+
+  function getProperty<T, K extends keyof T>(arg: T, key: K): T[K] {
+    console.log(arg[key]);
+    return arg[key];
+  }
+
+  const johnsName = getProperty(john, 'name');
+  getProperty(john, 'position'); // "Programmer"
+  getProperty(john, 'age'); // error no age property
+  ```
 
 #### 3. Mapped Types: [&#x21e7;](#session-4-20240523)
 
-Reference: [Utility types](https://www.typescriptlang.org/docs/handbook/utility-types.html)
+> **_Reference_**: [Utility types](https://www.typescriptlang.org/docs/handbook/utility-types.html)
 
 - `Partial, Required, Readonly`
 - `Pick`
