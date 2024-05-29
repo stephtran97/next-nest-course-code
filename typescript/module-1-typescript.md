@@ -365,17 +365,221 @@ Reference: [Utility types](https://www.typescriptlang.org/docs/handbook/utility-
 #### 2. Template literal types: [&#x21e7;](#session-5-20240525)
 
 - Basics
+
+  - Syntax:
+
+    ```ts
+    type FirstName = 'Albert';
+    type LastName = 'Einstein';
+
+    type Name = `${FirstName} ${LastName}`; // <- template literal ✨type✨!
+    // => "Albert Einstein"
+
+    type Index = 20;
+
+    type Accessor = `users[${Index}].isAdmin`;
+    // => "users[20].isAdmin"
+
+    type EqualsTrue = `${Accessor} === ${true}`;
+    // => "users[20].isAdmin === true"
+    ```
+
+  - That's something to keep in mind, as it's sometimes useful to `stringify` numbers to treat number literal types like `0` as equivalent to string literal types like `"0"`:
+
+    ```ts
+    type Obj = { '0': 100 };
+    type Index = 0;
+
+    type Get<Obj, Key extends keyof Obj> = Obj[Key];
+
+    type A = Get<Obj, Index>; // ❌ `0` isn't assignable to `keyof Obj`
+    type B = Get<Obj, `${Index}`>; // ✅ this works!
+    ```
+
 - Templates containing primitive types
+
+  - Example:
+
+    ```ts
+    type FirstName = 'William';
+
+    type William = `${FirstName} ${string}`; // `William ${string}`
+    const name1: William = 'William Cao'; // ✅
+    const name2: William = 'William King'; // ✅
+    const name3: William = 'William '; // ✅ because "" is a string.
+    const name4: William = "Who's there?"; // ❌
+    const name5: William = 'Hello William'; // ❌
+    ```
+
+  - Template Literal Types sit right in between primitive types and string literals in our dear subtyping hierarchy:
+
+  ```mermaid
+    graph TD;
+    subgraph string;
+      subgraph get-string["(`get${string}`)"];
+        get-user((getUsers));
+        get-posts((getPosts));
+      end
+    end
+  ```
+
+  - But what's even cooler is that you can use them to create patterns containing `numbers` or `booleans` too.
+
+    ```ts
+    type Age = `I was born in ${number}.`;
+
+    const age1: Age = 'I was born in 1993.'; // ✅
+    const age2: Age = 'I was born in 3.141592.'; // ✅
+    const age3: Age = 'I was born in a galaxy far, far away...'; // ❌
+    // "a galaxy far, far away..." is not a number!
+
+    function ping(localDomain: `localhost:${number}`): void;
+
+    ping('localhost:3000'); // ✅
+    ping('localhost:8080'); // ✅
+    ping('localhost:three-thousand'); // ❌
+    ```
+
 - Templates and union types
-- Helper functions
+
+  - What if we dropped a union type in a template? Let's find out:
+
+    ```ts
+    type Size = 'sm' | 'md' | 'lg';
+
+    type ClassName = `size-${Size}`;
+    // => "size-sm" | "size-md" | "size-lg"
+    ```
+
+  - Each item of this union is interpolated separately, and we get back **the union of their results**! Now, what if we try to interpolate **several union types** in the same template?
+
+    ```ts
+    type Variant = 'primary' | 'secondary';
+    type Size = 'sm' | 'md' | 'lg';
+
+    type ButtonStyle = `${Variant}-${Size}`;
+    // => | "primary-sm"   | "primary-md"   | "primary-lg"
+    //    | "secondary-sm" | "secondary-md" | "secondary-lg"
+    ```
+
+- Helper functions: `Uppercase`, `Lowercase`, `Capitalize`, `Uncapitalize`
+  - There's `Uppercase`, which turns every letter in the string into uppercase:
+    ```ts
+    type T1 = Uppercase<'hello'>;
+    //   =>   "HELLO"
+    ```
+  - `Lowercase` performs the opposite transformation and turns every letter into lowercase:
+    ```ts
+    type T2 = Lowercase<'HELLO'>;
+    //   =>   "hello"
+    ```
+  - `Capitalize` only puts the first letter of the string in uppercase:
+    ```ts
+    type T3 = Capitalize<'hello, world!'>;
+    //   =>   "Hello, world!"
+    ```
+  - `Uncapitalize` puts the first letter of the string in lowercase:
+    ```ts
+    type T4 = Uncapitalize<'HelloWorld'>;
+    //   =>   "helloWorld"
+    ```
 - Templates and object properties
+
+  - Computing object properties is another area where Template Literal Types really shine. Let's say we have an HTTP service that should define a `GET` and `POST` method for all of our resources. We can compute the names of all the necessary fetch functions pretty easily:
+
+  ```ts
+  type Method = 'GET' | 'POST';
+
+  type Resource = 'user' | 'blogPost';
+
+  type PropName = `${Lowercase<Method>}${Capitalize<Resource>}`;
+  // => "getUser" | "getBlogPost" | "postUser" | "postBlogPost"
+  ```
+
+  - Here, we generate the combinations of our `Methods` and `Resources`, and we use two of the helper functions we've just seen to format them as method names. To create an object type, the only thing left to do is to drop our `PropName` type in a `Record`:
+
+  ```ts
+  type HTTPService = Record<PropName, Function>;
+  // => { getUser: Function; getBlogPost: Function; postUser: Function; ... }
+  ```
 
 #### 3. The Union type: [&#x21e7;](#session-5-20240525)
 
 - The union type multiverse
-- The distributive natures of Union types
+
+  - Example: everything that can happen happens
+
+    ```ts
+    type TrafficLight = 'green' | 'orange' | 'red';
+
+    const trafficLight: TrafficLight = 'green';
+    type ShouldStop = { green: 'no'; orange: 'yes'; red: 'yes' };
+
+    type T = ShouldStop['green' | 'orange' | 'red'];
+    /*<=>*/ type T =
+      | ShouldStop['green']
+      | ShouldStop['orange']
+      | ShouldStop['red'];
+    /*<=>*/ type T = 'no' | 'yes' | 'yes';
+    /*<=>*/ type T = 'no' | 'yes';
+    ```
+
+- The distributive natures of Union types (Tính giao hoán của các `Kiểu liên hợp`)
+  ```ts
+  type T1 = `x ${'a' | 'b' | 'c'}`;
+  // <=>
+  type T2 = `x ${'a'}` | `x ${'b'}` | `x ${'c'}`;
+  ```
+  - Template literal types distribute over union types. Our `|` behaves like a `+` and the template literal's `${...}` interpolation syntax behaves like a `*`.
+    ```ts
+    type T1 = User['name' | 'age'];
+    // <=>
+    type T2 = User['name'] | User['age'];
+    ```
 - Unions and Conditional types
 
+  - Conditional types are the secret weapon of type-level programmers. They are the main building blocks of our smart type-inference logic. The most interesting things happen when combining them with other features of the type system, and union types are no exception.
+
+    - This `IsString` generic returns `"yes"` if the input type is assignable to `string` and `"no"` otherwise:
+
+    ```ts
+    type IsString<T> = T extends string ? 'yes' : 'no';
+    type T1 = IsString<'is this a string?'>; // "yes"
+
+    type T2 = IsString<123>; // "no"
+    ```
+
+    - Now, what if we give a union type to `IsString`:
+
+    ```ts
+    type T = IsString<'a' | 2 | 'c'>; // yes? no? 🤔
+    type T = IsString<'a' | 2 | 'c'>;
+    //   =>  "yes" | "no"
+    /* <=>*/ type T =
+      | ('a' extends string ? 'yes' : 'no')
+      | (2 extends string ? 'yes' : 'no')
+      | ('c' extends string ? 'yes' : 'no');
+    /* <=>*/ type T = 'yes' | 'no' | 'yes';
+    /* <=>*/ type T = 'yes' | 'no';
+    ```
+
 #### 4. `Prettify` type helper: [&#x21e7;](#session-5-20240525)
+
+- Helper type from TypeScript: show the actual type of a object in a cleaner way
+  ```ts
+  type Prettify<T> = {
+    [K in keyof T]: T[K];
+  } & {};
+  type Intersected = Prettify<
+    {
+      a: string;
+    } & {
+      b: number;
+    } & {
+      c: boolean;
+    }
+  >;
+  // { a: string; b: number; c: boolean }
+  ```
 
 ### Practical TypeScript:
