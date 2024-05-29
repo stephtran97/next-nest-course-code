@@ -192,7 +192,7 @@ isFunny = 'asd';
 
 #### 6. Variadic Tuple (using `...` operator) [&#x21e7;](#session-2-20240516)
 
-#### 7. Enum: Reading [Don't use Enum in TypeScript](https://dev.to/ivanzm123/dont-use-enums-in-typescript-they-are-very-dangerous-57bh#:~:text=Excessive%20use%20of%20regular%20ENUMs,new%20values%20can%20be%20added){:target="\_blank"}
+#### 7. Enum: Reading [Don't use Enum in TypeScript](https://dev.to/ivanzm123/dont-use-enums-in-typescript-they-are-very-dangerous-57bh#:~:text=Excessive%20use%20of%20regular%20ENUMs,new%20values%20can%20be%20added)
 
 - Instead using union types
 - Define to Object and types based on that Object
@@ -237,7 +237,7 @@ isFunny = 'asd';
 
 #### 3. Mapped Types: [&#x21e7;](#session-4-20240523)
 
-Reference: [Utility types](https://www.typescriptlang.org/docs/handbook/utility-types.html){:target="\_blank"}
+Reference: [Utility types](https://www.typescriptlang.org/docs/handbook/utility-types.html)
 
 - `Partial, Required, Readonly`
 - `Pick`
@@ -360,7 +360,7 @@ Reference: [Utility types](https://www.typescriptlang.org/docs/handbook/utility-
     type T4 = FirstAndLast<[1, 2, 3, 4]>; // => [1, 4]
     ```
 
-  - [Practice `infer` keyword](./2-advanced-types/infer-keyword/infer-keyword-practice.ts){:target="\_blank"}&#9989;
+  - [Practice `infer` keyword](./2-advanced-types/infer-keyword/infer-keyword-practice.ts)&#9989;
 
 #### 2. Template literal types: [&#x21e7;](#session-5-20240525)
 

@@ -2,7 +2,7 @@
 
 ## Technologies:
 
-- [Module 1: TypeScript]("./typescript/module-1-typescript.md"target="_blank")
+- [Module 1: TypeScript](./typescript/module-1-typescript.md)
 - ReactJS
 - Module 2: PostgreSQL
 - NextJS
@@ -10,7 +10,7 @@
 - NodeJS/ExpressJS
 - Docker
 
-### [Volta]("https://www.volta.sh"target="_blank") for controlling dev environment
+### [Volta](https://www.volta.sh) for controlling dev environment
 
 - Using to control dev environment in a team
 - Config in `package.json` file
