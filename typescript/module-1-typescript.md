@@ -1,6 +1,6 @@
 # Module 1: TypeScript
 
-## Reference:
+## Reference
 
 - Book: `Effective TypeScript`
 
@@ -17,7 +17,7 @@
 - [Session 5](#session-5-20240525)
 - [Practical TypeScript](#practical-typescript)
 
-### Session 1 20240511:
+### Session 1 20240511
 
 [Jump up &#x21e7;](#table-of-content)
 
@@ -168,7 +168,7 @@ isFunny = 'asd';
 
 #### 11. Session 1 practices &#10060;
 
-### Session 2 20240516:
+### Session 2 20240516
 
 [Jump up &#x21e7;](#table-of-content)
 
@@ -203,7 +203,7 @@ isFunny = 'asd';
 
 #### 10. Session 2 practices &#10060;
 
-### Session 3 20240518:
+### Session 3 20240518
 
 [Jump up &#x21e7;](#table-of-content)
 
@@ -227,7 +227,7 @@ isFunny = 'asd';
 
 #### 4. Session 3 practices &#10060;
 
-### Session 4 20240523:
+### Session 4 20240523
 
 [Jump up &#x21e7;](#table-of-content)
 
@@ -356,7 +356,7 @@ isFunny = 'asd';
 
 #### 5. Session 4 practices &#10060;
 
-### Session 5 20240525:
+### Session 5 20240525
 
 [Jump up &#x21e7;](#table-of-content)
 
@@ -566,26 +566,35 @@ isFunny = 'asd';
     ```
 
 - Helper functions: `Uppercase`, `Lowercase`, `Capitalize`, `Uncapitalize`
+
   - There's `Uppercase`, which turns every letter in the string into uppercase:
+
     ```ts
     type T1 = Uppercase<'hello'>;
     //   =>   "HELLO"
     ```
+
   - `Lowercase` performs the opposite transformation and turns every letter into lowercase:
+
     ```ts
     type T2 = Lowercase<'HELLO'>;
     //   =>   "hello"
     ```
+
   - `Capitalize` only puts the first letter of the string in uppercase:
+
     ```ts
     type T3 = Capitalize<'hello, world!'>;
     //   =>   "Hello, world!"
     ```
+
   - `Uncapitalize` puts the first letter of the string in lowercase:
+
     ```ts
     type T4 = Uncapitalize<'HelloWorld'>;
     //   =>   "helloWorld"
     ```
+
 - Templates and object properties
 
   - Computing object properties is another area where Template Literal Types really shine. Let's say we have an HTTP service that should define a `GET` and `POST` method for all of our resources. We can compute the names of all the necessary fetch functions pretty easily:
@@ -628,17 +637,21 @@ isFunny = 'asd';
     ```
 
 - The distributive natures of Union types (Tính giao hoán của các `Kiểu liên hợp`)
+
   ```ts
   type T1 = `x ${'a' | 'b' | 'c'}`;
   // <=>
   type T2 = `x ${'a'}` | `x ${'b'}` | `x ${'c'}`;
   ```
+
   - Template literal types distribute over union types. Our `|` behaves like a `+` and the template literal's `${...}` interpolation syntax behaves like a `*`.
+
     ```ts
     type T1 = User['name' | 'age'];
     // <=>
     type T2 = User['name'] | User['age'];
     ```
+
 - Unions and Conditional types
 
   - Conditional types are the secret weapon of type-level programmers. They are the main building blocks of our smart type-inference logic. The most interesting things happen when combining them with other features of the type system, and union types are no exception.
@@ -669,6 +682,7 @@ isFunny = 'asd';
 #### 4. `Prettify` type helper: [&#x21e7;](#session-5-20240525)
 
 - Helper type from TypeScript: show the actual type of a object in a cleaner way
+
   ```ts
   type Prettify<T> = {
     [K in keyof T]: T[K];
@@ -685,4 +699,4 @@ isFunny = 'asd';
   // { a: string; b: number; c: boolean }
   ```
 
-### Practical TypeScript:
+### Practical TypeScript

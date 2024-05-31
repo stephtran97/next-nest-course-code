@@ -1,6 +1,6 @@
 # Repository for storing NextJS + NestJS Course learning code
 
-## Technologies:
+## Technologies
 
 - [Module 1: TypeScript](./typescript/module-1-typescript.md)
 - ReactJS
@@ -14,6 +14,7 @@
 
 - Using to control dev environment in a team
 - Config in `package.json` file
+
   ```json
   {
     ...
@@ -24,4 +25,5 @@
     ...
   }
   ```
+
 - Sync dev environment only in the project, not affecting global environment
