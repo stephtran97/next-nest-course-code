@@ -343,10 +343,133 @@ isFunny = 'asd';
 > **_Reference_**: [Utility types](https://www.typescriptlang.org/docs/handbook/utility-types.html)
 
 - `Partial, Required, Readonly`
-- `Pick`
-- `Record`
-- `Omit`
+
+  - `Partial`: make all properties of a type optional
+
+    ```ts
+    type Partial<T= {
+      [P in keyof T]?: T[P];
+    };
+    ```
+
+  - `Required`: make all properties required
+
+    - `-?` operation: turn all optional to required; because normally in generic which one is optional will resulted as optional
+
+    ```ts
+    type Required<T> = {
+      [P in keyof T]-?: T[P];
+    };
+    ```
+
+  - `Readonly`: make all properties readonly
+
+    ```ts
+    type Readonly<T> = {
+      readonly [P in keyof T]: T[P];
+    };
+    ```
+
+- `Pick`: The Pick mapped type is used to construct a type based on a subset of properties of another type.
+
+  ```ts
+  interface IAbc {
+    a: number;
+    b: string;
+    c: boolean;
+  }
+
+  // Define a new type PickAb using the Pick utility type to select only the "a" and "b" properties from the IAbc interface.
+  type PickAb = Pick<IAbc, 'a' | 'b'>;
+  let pickAbObject: PickAb = {
+    a: 1,
+    b: 'test'
+  };
+
+  console.log(pickAbObject);
+  ```
+
+- `Record` is used to create a type with a set of properties `K` of type `T`.
+
+  - Syntax: `Record<Keys, Type>`, where Keys is the set of keys and Type is the type of the values for those keys.
+
+    ```ts
+    type RecordedCd = Record<'c' | 'd', number>;
+
+    // Declare a variable of type RecordedCd and assign it an object with properties "c" and "d" with the types of number
+    let recordedCdVar: RecordedCd = {
+      c: 1,
+      d: 1
+    };
+    ```
+
+- `Omit`: opposite with `Pick` - omit specific properties from a type
+
+  - For example, let's say we have an interface `IAbc` with properties `a`, `b`, and `c`. We can use the `Omit` utility type to create a new type `OmitAb` that excludes the property `b` from `IAbc`.
+
+  ```ts
+  interface IAbc {
+    a: number;
+    b: string;
+    c: boolean;
+  }
+
+  type OmitAc = Omit<IAbc, 'b'>;
+  let omitAcObject: OmitAc = {
+    a: 1,
+    c: true
+  };
+
+  console.log(omitAcObject);
+  ```
+
+  - This will create a new object `omitAbObject` with properties `a` and `c`, excluding the property `b` from `IAbc`.
+
 - `readonly`, `const`
+
+  - Example:
+
+  ```ts
+  const CEO = 'Jeff'; // strings are immutable
+
+  const CeoObject = {
+    // objects are not immutable
+    name: 'Jeff',
+    company: 'Amazon'
+  };
+
+  // CeoObject.name = 'Bill'
+
+  // 1. Object.freeze
+  // 2. as const
+
+  function toUpperCaseNames(names: ReadonlyArray<string>) {
+    // names.push('My Name')
+    return names.map((name) => {
+      return name.toUpperCase();
+    });
+  }
+
+  type Position = 'Programmer' | 'Manager' | 'HR' | 'Scrum master';
+
+  type Employee = {
+    name: string;
+    position: Position;
+  };
+
+  function paySalary(empl: Employee) {
+    console.log(`The pay for ${empl.position} is 10000 `);
+  }
+
+  const john = {
+    name: 'John',
+    position: 'Programmer'
+  } as const;
+
+  paySalary(john);
+  ```
+
+  - `as const` or `Object.freeze()`: make object readonly
 
 #### 4. Conditional types: [&#x21e7;](#session-4-20240523)
 
