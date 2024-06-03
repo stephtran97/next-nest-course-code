@@ -473,9 +473,114 @@ isFunny = 'asd';
 
 #### 4. Conditional types: [&#x21e7;](#session-4-20240523)
 
+> **_NOTE:_** Learn about TypeScript's conditional types for dynamic type definition in functions and how to use conditional type chaining to obtain specific types.
+
+- Conditional types in functions
+
+  - Concept of conditional expressions with the following format:
+
+  ```ts
+  (conditional) ? ( true statement ) : ( false statement );
+  ```
+
+  - We can use this syntax with types as well to form what is known as a conditional type:
+
+  ```ts
+  // The type takes in a generic parameter T and checks whether T is of type number or string.
+  // If T is a number, then NumberOrString<T> is of type number. Otherwise, it's of type string.
+  type NumberOrString<T> = T extends number ? number : string;
+
+  function logNumberOrString<T>(input: NumberOrString<T>) {
+    console.log(`logNumberOrString : ${input}`);
+  }
+
+  // Calls to the logNumberOrString function with different input types.
+  logNumberOrString<number>(1);
+  logNumberOrString<string>('test');
+  logNumberOrString<boolean>('a');
+  ```
+
 - Syntax
+
+  ```ts
+  type TrueOrFalse = A extends B ? true : false;
+  /*                 -----------   ----   -----
+                        ^          /         \
+                  condition    branch     branch
+                              if true    if false
+            
+                    \-------------------------/
+                                  ^
+                          Conditional Type
+  */
+  ```
+
+  - Before the question mark stands a condition. It's always of the form `A extends B`, which is how you ask **_"Is A assignable to B?"_** to the type checker.
+    > "A extends B" means **_"Is A assignable to B?"_**
+  - "A is assignable to B" means that the set of values defined by the type `B` includes the set of values defined by the type `A`.
+
+  ```mermaid
+    graph TD;
+    subgraph type-b[Type B]
+      type-a[Type A]
+    end;
+  ```
+
+  - Note that A extends B does not return a boolean literal like true or false. You can't replace it with a hard-coded boolean type:
+
+    ```ts
+    type T = true ? true : false;
+    //       ^ ❌ Syntax error: TS expects an expression
+    //                          of the form "A extends B"
+    ```
+
+  - This also means you can't assign `A extends B` to a variable:
+
+  ```ts
+  type T = 2 extends number;
+  //         ^ ❌ Syntax error:
+  //              invalid use of `extends`.
+  ```
+
+  - To have a valid Conditional Type, you need a full `A extends B ? ... : ...` expression:
+
+    ```ts
+    type IsMeaningOfLife<N> = N extends 42 ? true : false;
+
+    type OK = IsMeaningOfLife<42>; // => true
+    type KO = IsMeaningOfLife<41>; // => false
+    ```
+
 - Type constrains
+  Example
+
+  ```ts
+  type If<A extends boolean, B, C> = A extends true ? B : C;
+
+  type a = If<true, number, string>; // number
+  type b = If<false, {}, []>; // []
+  ```
+
+  - `extends` keyword in the left side and right side do not have the same usage:
+
+    - `A extends true` is the **condition**
+    - `A extends boolean` is the **type constraint**
+      => Type Constraints let us make sure that one of our type-level function's parameters will always be assignable to some type.
+    - In our example, `If<A extends boolean, ...> = ...` is a way to enforce that our function If can only accept types assignable to `boolean` as first parameter.
+    - The `boolean` type has 4 subtypes: `true`, `false`, `boolean` and `never`. Remember `never`, the empty set? It's a subtype of every other type, including `boolean`!
+
+    ```ts
+    type T1 = If<true, number, string>; // ✅ => number
+    type T2 = If<false, number, string>; // ✅ => string
+    type T3 = If<never, number, string>; // ✅ => never
+    type T4 = If<'not a boolean', number, string>;
+    //           ~~~~~~~~~~~~~~~ ❌ not assignable to type `boolean`.
+    ```
+
+  - The `extends` keyword is always about assignability. In a **conditional type**, we use `extends` to ask the question "Is A assignable to B?" to the type-checker. In a **type constraint**, however, `extends` is an affirmation: "A must be assignable to B."
+
 - Conditional type chaining
+- Distributed conditional types
 
 #### 5. Session 4 practices &#10060;
 
