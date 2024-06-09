@@ -2,11 +2,15 @@
 
 ## Reference
 
+- [SQL Roadmap](https://roadmap.sh/sql)
+- [PostgreSQL Roadmap](https://roadmap.sh/postgresql-dba) (Advanced)
+
 ## Libraries
 
 ## Table of Content
 
 - [Session 1](#session-1-20240601)
+- [Session 2](#session-1-20240606)
 
 ### Session 1 20240601
 
@@ -69,3 +73,9 @@
     - Schema separate into tables
     - Tables have relation with each others
   - Pgadmin: a portal with UI to interact with PostgreSQL
+
+### Session 2 20240606
+
+[Jump up &#x21e7;](#table-of-content)
+
+#### 1. Manage Database [&#x21e7;](#session-2-20240606)
