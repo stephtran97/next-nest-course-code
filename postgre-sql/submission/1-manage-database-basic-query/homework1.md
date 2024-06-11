@@ -161,39 +161,63 @@ CREATE TABLE film
 - Select all countries
 
   ```sql
-  SELECT * FROM country;
+  SELECT country_id, country, last_update
+  FROM country;
   ```
 
 - List all unique cities
 
   ```sql
-  SELECT DISTINCT * FROM city;
+  SELECT DISTINCT city_id, city, country_id, last_update
+  FROM city;
   ```
 
 - Count the number of customers
 
   ```sql
-  SELECT COUNT(customer_id) FROM customer;
+  SELECT COUNT(customer_id) AS customer_count FROM customer;
   ```
 
 - Get the total number of cities in each country
 
   ```sql
-  SELECT COUNT(country_id) FROM city;
+  SELECT
+  country.country,
+  COUNT(DISTINCT city.city_id) as city_count
+  FROM
+    city JOIN country ON city.country_id = country.country_id
+  GROUP BY (country.country);
   ```
 
 - List all addresses ordered by their district
 
   ```sql
-  SELECT * FROM address ORDER BY district ASC;
+  SELECT * FROM address
+  ORDER BY district ASC;
   ```
 
 - Find the top 3 countries with the most cities
 
   ```sql
-  SELECT * FROM country ORDER BY COUNT(country_id) DESC LIMIT 3;
+  SELECT
+  country.country,
+  COUNT(DISTINCT city.city_id) as city_count
+  FROM
+    city JOIN country ON city.country_id = country.country_id
+  GROUP BY (country.country)
+  ORDER BY city_count DESC
+  LIMIT 3;
   ```
 
 - Find the top 5 staff members with the most payments processed
 
-**<r>Solution:</r>**
+  ```sql
+  SELECT
+  staff.first_name,
+  staff.last_name,
+  payment.amount
+  FROM
+    staff JOIN payment ON staff.staff_id = payment.staff_id
+  ORDER BY payment.amount DESC
+  LIMIT 5;
+  ```
