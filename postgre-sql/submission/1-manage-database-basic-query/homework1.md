@@ -79,12 +79,12 @@ CREATE TABLE film
       amount >= 0.00
       AND amount <= 999.99
     ),
-    promotion_code varchar(15) DEFAULT '' CONSTRAINT promotion_length_check CHECK (length(promotion_code) <= 10),
+    promotion_code varchar(15) CONSTRAINT promotion_length_check CHECK (length(promotion_code) <= 10),
     created timestamp without time zone,
     updated timestamp without time zone,
     PRIMARY KEY (transaction_id),
-    CONSTRAINT customer_id_fk FOREIGN KEY (customer_id) REFERENCES table_name (column_name),
-    CONSTRAINT film_id_fk FOREIGN KEY (film_id) REFERENCES table_name (column_name)
+    CONSTRAINT customer_id_fk FOREIGN KEY (customer_id) REFERENCES customer (customer_id),
+    CONSTRAINT film_id_fk FOREIGN KEY (film_id) REFERENCES film (film_id)
   );
 ```
 
@@ -169,6 +169,7 @@ CREATE TABLE film
 
   ```sql
   SELECT DISTINCT city_id, city, country_id, last_update
+  -- SELECT DISTINCT city
   FROM city;
   ```
 
@@ -181,12 +182,19 @@ CREATE TABLE film
 - Get the total number of cities in each country
 
   ```sql
+  -- SELECT
+  -- country.country,
+  -- COUNT(DISTINCT city.city_id) as city_count
+  -- FROM
+  --   city JOIN country ON city.country_id = country.country_id
+  -- GROUP BY (country.country);
   SELECT
-  country.country,
-  COUNT(DISTINCT city.city_id) as city_count
+    country_id,
+    count(country_id) as city_count
   FROM
-    city JOIN country ON city.country_id = country.country_id
-  GROUP BY (country.country);
+    city
+  GROUP BY
+    (country_id);
   ```
 
 - List all addresses ordered by their district
@@ -199,25 +207,47 @@ CREATE TABLE film
 - Find the top 3 countries with the most cities
 
   ```sql
+  -- SELECT
+  -- country.country,
+  -- COUNT(DISTINCT city.city_id) as city_count
+  -- FROM
+  --   city JOIN country ON city.country_id = country.country_id
+  -- GROUP BY (country.country)
+  -- ORDER BY city_count DESC
+  -- LIMIT 3;
   SELECT
-  country.country,
-  COUNT(DISTINCT city.city_id) as city_count
+    country_id,
+    count(country_id) AS city_count
   FROM
-    city JOIN country ON city.country_id = country.country_id
-  GROUP BY (country.country)
-  ORDER BY city_count DESC
-  LIMIT 3;
+    city
+  GROUP BY
+    (country_id)
+  ORDER BY
+    city_count DESC
+  LIMIT
+    3;
   ```
 
 - Find the top 5 staff members with the most payments processed
 
   ```sql
+  -- SELECT
+  -- staff.first_name,
+  -- staff.last_name,
+  -- payment.amount
+  -- FROM
+  --   staff JOIN payment ON staff.staff_id = payment.staff_id
+  -- ORDER BY payment.amount DESC
+  -- LIMIT 5;
   SELECT
-  staff.first_name,
-  staff.last_name,
-  payment.amount
+    staff_id, COUNT(payment_id) as payment_count  -- <=> COUNT(staff_id)
   FROM
-    staff JOIN payment ON staff.staff_id = payment.staff_id
-  ORDER BY payment.amount DESC
+    payment
+  GROUP BY
+    staff_id
+  ORDER BY
+    payment_count DESC
   LIMIT 5;
   ```
+
+=> Attention to `GROUP BY`
